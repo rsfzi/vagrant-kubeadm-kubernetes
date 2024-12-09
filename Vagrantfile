@@ -58,6 +58,8 @@ Vagrant.configure("2") do |config|
         "SERVICE_CIDR" => settings["network"]["service_cidr"]
       },
       path: "scripts/master.sh"
+    controlplane.vm.provision "shell",
+      path: "scripts/helm.sh"
   end
 
   (1..NUM_WORKER_NODES).each do |i|
