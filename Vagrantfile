@@ -89,12 +89,16 @@ Vagrant.configure("2") do |config|
         },
         path: "scripts/common.sh"
       node.vm.provision "shell", path: "scripts/node.sh"
+      node.vm.provision "shell",
+        path: "scripts/helm.sh"
 
       # Only install the dashboard after provisioning the last worker (and when enabled).
       if i == NUM_WORKER_NODES and settings["software"]["dashboard"] and settings["software"]["dashboard"] != ""
-        node.vm.provision "shell", path: "scripts/dashboard.sh"
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/dashboard.sh"
+        end
       end
     end
-
   end
 end 
