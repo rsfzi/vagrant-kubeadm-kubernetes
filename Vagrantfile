@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.box_check_update = true
 
+  if settings["nodes"]["control"]["enabled"] == "true"
   config.vm.define "controlplane" do |controlplane|
     controlplane.vm.hostname = "controlplane"
     controlplane.vm.network "private_network", ip: settings["network"]["control_ip"]
@@ -61,6 +62,7 @@ Vagrant.configure("2") do |config|
     controlplane.vm.provision "shell",
       path: "scripts/helm.sh"
   end
+  end
 
   (1..NUM_WORKER_NODES).each do |i|
 
@@ -88,9 +90,11 @@ Vagrant.configure("2") do |config|
           "OS" => settings["software"]["os"]
         },
         path: "scripts/common.sh"
-      node.vm.provision "shell", path: "scripts/node.sh"
+
       node.vm.provision "shell",
         path: "scripts/helm.sh"
+      if settings["nodes"]["control"]["enabled"] == "true"
+      node.vm.provision "shell", path: "scripts/node.sh"
 
       # Only install the dashboard after provisioning the last worker (and when enabled).
       if i == NUM_WORKER_NODES and settings["software"]["dashboard"] and settings["software"]["dashboard"] != ""
@@ -98,6 +102,7 @@ Vagrant.configure("2") do |config|
           s.privileged= false
           s.path= "scripts/dashboard.sh"
         end
+      end
       end
     end
   end
