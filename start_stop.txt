@@ -1,0 +1,13 @@
+We have had hard DC crashes and when bringing things back up, we just made sure the control plane was up before our nodes and things have come back fine.
+
+We have also powered off our cluster(s) before and for the most part did this:
+
+1.  Scale all applications down to 0 excluding cluster services e.g. CNI DaemonSets, DNS etc.
+2.  Drain all nodes excluding the control plane.
+3.  Shut down nodes.
+4.  Shut down all components but kube-apiserver and etcd. – If using kubelet to manage components (kubeadm), just move the manifests out of the /etc/kubernetes/manifests dir and kubelet will stop the containers gracefully.
+5.  shut down kube-apiserver
+6.  Stop kubelet on control plane, just ensure the etcd leader is the last one to be stopped.
+7.  Backup dirs/etcd if needed.
+
+Bringing it backup is essentially the opposite order.
