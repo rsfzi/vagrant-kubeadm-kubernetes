@@ -4,6 +4,7 @@ We have also powered off our cluster(s) before and for the most part did this:
 
 1.  Scale all applications down to 0 excluding cluster services e.g. CNI DaemonSets, DNS etc.
 2.  Drain all nodes excluding the control plane.
+    kubectl drain --ignore-daemonsets  --delete-emptydir-data node02
 3.  Shut down nodes.
 4.  Shut down all components but kube-apiserver and etcd. – If using kubelet to manage components (kubeadm), just move the manifests out of the /etc/kubernetes/manifests dir and kubelet will stop the containers gracefully.
 5.  shut down kube-apiserver
