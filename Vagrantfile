@@ -99,6 +99,9 @@ Vagrant.configure("2") do |config|
 
       node.vm.provision "shell",
         path: "scripts/helm.sh"
+      node.vm.provision "shell", inline: <<-SHELL
+        apt-get install -y podman
+      SHELL
       if settings["nodes"]["control"]
       node.vm.provision "shell", path: "scripts/node.sh"
 
