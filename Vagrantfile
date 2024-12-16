@@ -18,6 +18,10 @@ Vagrant.configure("2") do |config|
         echo "$IP_NW$((IP_START+i)) node0${i}" >> /etc/hosts
       done
   SHELL
+  
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get install -y amqp-tools
+  SHELL
 
   if `uname -m`.strip == "aarch64"
     config.vm.box = settings["software"]["box"] + "-arm64"
