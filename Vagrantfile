@@ -65,6 +65,8 @@ Vagrant.configure("2") do |config|
       path: "scripts/master.sh"
     controlplane.vm.provision "shell",
       path: "scripts/helm.sh"
+    controlplane.vm.provision "shell",
+      path: "scripts/rabbitmq.sh"
   end
   end
 
