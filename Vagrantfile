@@ -9,13 +9,17 @@ IP_NW = IP_SECTIONS.captures[0]
 # Last octet excluding all dots:
 IP_START = Integer(IP_SECTIONS.captures[1])
 NUM_WORKER_NODES = settings["nodes"]["workers"]["count"]
+WORKER_PREFIX = ""
+if settings["nodes"]["workers"]["prefix"]
+  WORKER_PREFIX = settings["nodes"]["workers"]["prefix"]
+end
 
 Vagrant.configure("2") do |config|
   config.vm.provision "shell", env: { "IP_NW" => IP_NW, "IP_START" => IP_START, "NUM_WORKER_NODES" => NUM_WORKER_NODES }, inline: <<-SHELL
       apt-get update -y
       echo "$IP_NW$((IP_START)) controlplane" >> /etc/hosts
       for i in `seq 1 ${NUM_WORKER_NODES}`; do
-        echo "$IP_NW$((IP_START+i)) node0${i}" >> /etc/hosts
+        echo "$IP_NW$((IP_START+i)) $WORKER_PREFIXnode0${i}" >> /etc/hosts
       done
   SHELL
   
@@ -72,8 +76,8 @@ Vagrant.configure("2") do |config|
 
   (1..NUM_WORKER_NODES).each do |i|
 
-    config.vm.define "node0#{i}" do |node|
-      node.vm.hostname = "node0#{i}"
+    config.vm.define "#{WORKER_PREFIX}node0#{i}" do |node|
+      node.vm.hostname = "#{WORKER_PREFIX}node0#{i}"
       node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
       if settings["shared_folders"]
         settings["shared_folders"].each do |shared_folder|
