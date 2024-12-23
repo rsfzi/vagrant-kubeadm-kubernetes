@@ -71,6 +71,8 @@ Vagrant.configure("2") do |config|
       path: "scripts/helm.sh"
     controlplane.vm.provision "shell",
       path: "scripts/rabbitmq.sh"
+    controlplane.vm.provision "shell",
+      path: "scripts/wireguard.sh"
   end
   end
 
@@ -106,6 +108,8 @@ Vagrant.configure("2") do |config|
       node.vm.provision "shell", inline: <<-SHELL
         apt-get install -y podman
       SHELL
+      config.vm.provision "shell",
+        path: "scripts/wireguard.sh"
       if settings["nodes"]["control"]
       node.vm.provision "shell", path: "scripts/node.sh"
 
@@ -119,4 +123,5 @@ Vagrant.configure("2") do |config|
       end
     end
   end
+
 end 
