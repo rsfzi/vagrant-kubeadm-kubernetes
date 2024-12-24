@@ -13,6 +13,9 @@ if [ ! -d $config_path ]; then
   mkdir -p $config_path
 fi
 
+echo "Copy existing wireguard keys..."
+cp -v /vagrant/*.pub $config_path/
+
 NODENAME=$(hostname -s)
 if [ ! -f host_$NODENAME.key ]; then
   echo "Create wireguard keys..."
@@ -22,7 +25,7 @@ fi
 
 if [ -f $config_path/host_gw.pub ]; then
   echo "Prepare wireguard config"
-  WG_NODE_IP=10.0.0.10
+  WG_NODE_IP="<ToDo>"
   PRIVATE_KEY=$(head -n 1 host_$NODENAME.key)
   GW_KEY=$(head -n 1 $config_path/host_gw.pub)
 
