@@ -13,6 +13,9 @@ if [ ! -d $config_path ]; then
   mkdir -p $config_path
 fi
 
+echo "Copy existing wireguard keys..."
+cp -v /vagrant/*.pub $config_path/
+
 NODENAME=$(hostname -s)
 if [ ! -f host_$NODENAME.key ]; then
   echo "Create wireguard keys..."
