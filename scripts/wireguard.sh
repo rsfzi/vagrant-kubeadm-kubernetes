@@ -25,7 +25,7 @@ fi
 
 if [ -f $config_path/host_gw.pub ]; then
   echo "Prepare wireguard config"
-  WG_NODE_IP=10.0.0.10
+  WG_NODE_IP="<ToDo>"
   PRIVATE_KEY=$(head -n 1 host_$NODENAME.key)
   GW_KEY=$(head -n 1 $config_path/host_gw.pub)
 
