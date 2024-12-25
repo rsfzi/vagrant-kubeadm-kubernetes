@@ -80,7 +80,9 @@ Vagrant.configure("2") do |config|
 
     config.vm.define "#{WORKER_PREFIX}node0#{i}" do |node|
       node.vm.hostname = "#{WORKER_PREFIX}node0#{i}"
-      node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
+      if WORKER_PREFIX == ""
+        node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
+      end
       if settings["shared_folders"]
         settings["shared_folders"].each do |shared_folder|
           node.vm.synced_folder shared_folder["host_path"], shared_folder["vm_path"]
