@@ -4,6 +4,8 @@
 
 set -euxo pipefail
 
+mkdir -p /var/lib/registry
+
 config_path="/vagrant/configs"
 
 /bin/bash $config_path/join.sh -v
