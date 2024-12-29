@@ -1,0 +1,7 @@
+gateway:
+iptables -I FORWARD -s 10.0.0.10/32 -d 10.1.0.10/32 -j ACCEPT
+iptables -I FORWARD -d 10.0.0.0/24 -i wg0 -j ACCEPT
+
+controlplane:
+ip route add 10.1.0.0/24 via 10.0.0.1 dev eth1
+
