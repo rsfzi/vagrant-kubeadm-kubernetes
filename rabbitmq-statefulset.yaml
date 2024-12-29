@@ -34,3 +34,7 @@ spec:
       volumes:
       - name: rabbitmq-data
         emptyDir: {}
+      #tolerations:
+      #- key: "mq"
+      #  operator: "Exists"
+      #  effect: "NoExecute"
