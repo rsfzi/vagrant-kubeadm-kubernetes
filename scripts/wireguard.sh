@@ -40,7 +40,8 @@ ListenPort = 51821
 [Peer]
 PublicKey = ${GW_KEY}
 Endpoint = 141.21.51.14:51823
-AllowedIPs = 10.1.0.0/24
+#AllowedIPs = 10.1.0.0/24
+AllowedIPs = 10.1.0.1/32,10.0.0.10/32
 PersistentKeepalive = 30
 EOF
 fi
