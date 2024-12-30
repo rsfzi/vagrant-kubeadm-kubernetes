@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
   SHELL
   
   config.vm.provision "shell", inline: <<-SHELL
+    apt-get install -y podman
     apt-get install -y amqp-tools
   SHELL
 
@@ -107,19 +108,22 @@ Vagrant.configure("2") do |config|
 
       node.vm.provision "shell",
         path: "scripts/helm.sh"
-      node.vm.provision "shell", inline: <<-SHELL
-        apt-get install -y podman
-      SHELL
       config.vm.provision "shell",
         path: "scripts/wireguard.sh"
       if settings["nodes"]["control"]
       node.vm.provision "shell", path: "scripts/node.sh"
 
       # Only install the dashboard after provisioning the last worker (and when enabled).
-      if i == NUM_WORKER_NODES and settings["software"]["dashboard"] and settings["software"]["dashboard"] != ""
+      if i == NUM_WORKER_NODES
+        if settings["software"]["dashboard"] and settings["software"]["dashboard"] != ""
+          node.vm.provision "shell" do |s|
+            s.privileged= false
+            s.path= "scripts/dashboard.sh"
+          end
+        end
         node.vm.provision "shell" do |s|
           s.privileged= false
-          s.path= "scripts/dashboard.sh"
+          s.path= "scripts/image_registry.sh"
         end
       end
       end
