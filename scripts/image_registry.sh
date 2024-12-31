@@ -12,6 +12,7 @@ while kubectl get pods -A -l app=registry | awk 'split($3, a, "/") && a[1] != a[
   echo 'image-registry is ready.'
 
 echo 'login to image-registry'
+# https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 podman login -u u -p p 10.0.0.10:30500 --tls-verify=false
 kubectl create secret generic cred-simexp-registry --from-file=.dockerconfigjson=$XDG_RUNTIME_DIR/containers/auth.json --type=kubernetes.io/dockerconfigjson
 #cat $XDG_RUNTIME_DIR/containers/auth.json
