@@ -3,12 +3,12 @@
 echo "$IFACE $STATE astate: $AdministrativeState ostate: $OperationalState wth: $ADDR ($IP_ADDRS - $IP6_ADDRS)"  >> /tmp/iplog.txt
 if [[ $IFACE == "eth1" && $OperationalState == "routable" ]]; then
     echo "eth1 routable -> add route"  >> /tmp/iplog.txt
-    /usr/sbin/ip route add 10.1.0.0/24 via 10.0.0.1 dev eth1
+    /usr/sbin/ip route add 10.1.0.0/16 via 10.0.0.1 dev eth1
 fi
 
 if [[ $IFACE == "eth1" && $OperationalState == "degraded" ]]; then
     echo "eth1 degraded -> remove route"  >> /tmp/iplog.txt
-    /usr/sbin/ip route del 10.1.0.0/24 via 10.0.0.1 dev eth1
+    /usr/sbin/ip route del 10.1.0.0/16 via 10.0.0.1 dev eth1
 fi
 
 exit 0
