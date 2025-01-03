@@ -50,6 +50,7 @@ Vagrant.configure("2") do |config|
         if settings["cluster_name"] and settings["cluster_name"] != ""
           vb.customize ["modifyvm", :id, "--groups", ("/" + settings["cluster_name"])]
         end
+	vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
     end
     controlplane.vm.provision "shell",
       env: {
