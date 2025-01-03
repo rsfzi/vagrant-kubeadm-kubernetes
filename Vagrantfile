@@ -75,6 +75,13 @@ Vagrant.configure("2") do |config|
       path: "scripts/rabbitmq.sh"
     controlplane.vm.provision "shell",
       path: "scripts/wireguard.sh"
+    controlplane.vm.provision "file", 
+      source: "hooks/50-ifup-hooks", 
+      destination: "/tmp/"
+    controlplane.vm.provision "shell", inline: <<-SHELL
+      cp /tmp/50-ifup-hooks /etc/networkd-dispatcher/routable.d/
+      ln -s /etc/networkd-dispatcher/routable.d/50-ifup-hooks /etc/networkd-dispatcher/degraded.d/
+    SHELL
   end
   end
 
