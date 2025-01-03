@@ -15,6 +15,10 @@ if settings["nodes"]["workers"]["prefix"]
 end
 
 Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: <<-'SHELL'
+    sed -i 's/GRUB_TIMEOUT=0/GRUB_TIMEOUT=3\nGRUB_RECORDFAIL_TIMEOUT=3/' /etc/default/grub
+    update-grub
+  SHELL
   config.vm.provision "shell", env: { "IP_NW" => IP_NW, "IP_START" => IP_START, "NUM_WORKER_NODES" => NUM_WORKER_NODES }, inline: <<-SHELL
       apt-get update -y
       echo "$IP_NW$((IP_START)) controlplane" >> /etc/hosts
@@ -50,7 +54,7 @@ Vagrant.configure("2") do |config|
         if settings["cluster_name"] and settings["cluster_name"] != ""
           vb.customize ["modifyvm", :id, "--groups", ("/" + settings["cluster_name"])]
         end
-	vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+        vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
     end
     controlplane.vm.provision "shell",
       env: {
