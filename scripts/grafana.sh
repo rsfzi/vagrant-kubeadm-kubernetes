@@ -10,4 +10,5 @@ echo "Install Loki ..."
 
 kubectl apply -f /vagrant/grafana-namespace.yaml
 kubectl apply -f /vagrant/grafana-pvc.yaml
+kubectl apply -f /vagrant/grafana-pv.yaml
 kubectl apply -f /vagrant/grafana-deployment.yaml
