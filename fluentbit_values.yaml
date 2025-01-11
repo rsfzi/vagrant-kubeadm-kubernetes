@@ -414,14 +414,14 @@ config:
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
-    [OUTPUT]
-        Name stdout
-        Match *
+    #[OUTPUT]
+    #    Name stdout
+    #    Match *
 
-    [OUTPUT]
-        Name file
-        Match *
-        Path /tmp/fluent/logs
+    #[OUTPUT]
+    #    Name file
+    #    Match *
+    #    Path /tmp/fluent/logs
 
     #[OUTPUT]
     #    Name es
@@ -437,6 +437,11 @@ config:
     #    Logstash_Format On
     #    Logstash_Prefix node
     #    Retry_Limit False
+
+    [OUTPUT]
+        name   loki
+        match  kube.*
+        labels job=simexp
 
   ## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/upstream-servers
   ## This configuration is deprecated, please use `extraFiles` instead.
