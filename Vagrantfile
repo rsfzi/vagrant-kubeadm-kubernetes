@@ -123,9 +123,8 @@ Vagrant.configure("2") do |config|
       node.vm.provision "shell",
         path: "scripts/wireguard.sh"
       node.vm.provision "shell", inline: <<-SHELL
-          mkdir /var/lib/zookeeper/data
-          mkdir /var/lib/zookeeper/log
-          mkdir /var/lib/kafka/data
+          mkdir /var/lib/loki
+          mkdir /var/lib/grafana
       SHELL
       if settings["nodes"]["control"]
       node.vm.provision "shell", path: "scripts/node.sh"

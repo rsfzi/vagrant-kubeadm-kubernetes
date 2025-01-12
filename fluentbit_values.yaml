@@ -390,8 +390,10 @@ config:
   inputs: |
     [INPUT]
         Name tail
-        Path /var/log/containers/*.log
+        Path /var/log/containers/simexp*.log
+        #Path /var/log/containers/*.log
         multiline.parser docker, cri
+        #Tag kube.simexp.*
         Tag kube.*
         Mem_Buf_Limit 5MB
         Skip_Long_Lines On
@@ -404,44 +406,46 @@ config:
 
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
+    #[FILTER]
+    #    Name kubernetes
+    #    Match kube.*
+    #    Merge_Log On
+    #    Keep_Log Off
+    #    K8S-Logging.Parser On
+    #    K8S-Logging.Exclude On
     [FILTER]
         Name kubernetes
         Match kube.*
+        #Match kube.simexp.*
+        #Match kube.var.log.containers.simexp.*
+        #Kube_Tag_Prefix kube.var.log.containers.
         Merge_Log On
         Keep_Log Off
+        #Merge_Log_Key log_processed
         K8S-Logging.Parser On
         K8S-Logging.Exclude On
+        #Log_Level trace
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
-    #[OUTPUT]
-    #    Name stdout
+    [OUTPUT]
+        Name stdout
     #    Match *
-
-    #[OUTPUT]
-    #    Name file
-    #    Match *
-    #    Path /tmp/fluent/logs
-
-    #[OUTPUT]
-    #    Name es
-    #    Match kube.*
-    #    Host elasticsearch-master
-    #    Logstash_Format On
-    #    Retry_Limit False
-
-    #[OUTPUT]
-    #    Name es
-    #    Match host.*
-    #    Host elasticsearch-master
-    #    Logstash_Format On
-    #    Logstash_Prefix node
-    #    Retry_Limit False
+        #Match simexp.*
+        #Match kube.simexp.*
+        Match kube.*
+        #Match kube.var.log.containers.simexp.*
 
     [OUTPUT]
-        name   loki
-        match  kube.*
-        labels job=simexp
+        Name   loki
+        Match  kube.*
+        #Match simexp*
+        #Match kube.simexp.*
+        #Match kube.var.log.containers.simexp.*
+        Labels task=simexp, job_name=$kubernetes['labels']['job-name'], pod_name=$kubernetes['pod_name'], host=$kubernetes['host']
+        #auto_kubernetes_labels on
+        Host  loki.loki
+        #Log_Level trace
 
   ## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/upstream-servers
   ## This configuration is deprecated, please use `extraFiles` instead.
@@ -523,6 +527,7 @@ initContainers: []
 #     command: ['kubectl', 'version']
 
 logLevel: info
+#logLevel: debug
 
 hotReload:
   enabled: false
