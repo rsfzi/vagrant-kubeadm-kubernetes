@@ -34,6 +34,8 @@ spec:
       volumes:
       - name: rabbitmq-data
         emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: node01
       #tolerations:
       #- key: "mq"
       #  operator: "Exists"
