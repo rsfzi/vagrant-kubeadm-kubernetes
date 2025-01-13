@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-class Analyze:
+class Extract:
     def __init__(self):
         pass
 
@@ -57,5 +57,5 @@ class Analyze:
 
 
 if __name__ == "__main__":
-    a = Analyze()
+    a = Extract()
     sys.exit(a.main())
