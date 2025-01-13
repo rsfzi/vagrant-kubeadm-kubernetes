@@ -73,5 +73,7 @@ spec:
           configMap:
             name: loki
         - name: data
-          persistentVolumeClaim:
-            claimName: loki-pvc
+          emptyDir:
+            sizeLimit: 2Gi
+      nodeSelector:
+        kubernetes.io/hostname: node01

@@ -10,7 +10,7 @@ echo "Install Loki ..."
 
 kubectl apply -f /vagrant/loki-namespace.yaml
 kubectl apply -f /vagrant/loki-configmap.yaml
-kubectl apply -f /vagrant/loki-pv.yaml
-kubectl apply -f /vagrant/loki-pvc.yaml
+#kubectl apply -f /vagrant/loki-pv.yaml
+#kubectl apply -f /vagrant/loki-pvc.yaml
 kubectl apply -f /vagrant/loki-deployment.yaml
 kubectl apply -f /vagrant/loki-service.yaml
