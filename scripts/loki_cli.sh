@@ -11,4 +11,4 @@ cd /var/tmp
 wget -c https://github.com/grafana/loki/releases/download/v${LOKI_VERSION}/${LOCAL_FILE}
 dpkg -i /var/tmp/${LOCAL_FILE}
 
-#echo "export LOKI_ADDR=http://loki.loki:3100" >> /home/vagrant/.bashrc
+echo "export LOKI_ADDR=http://10.0.0.10:32031" >> /home/vagrant/.bashrc

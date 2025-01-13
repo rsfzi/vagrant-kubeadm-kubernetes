@@ -8,8 +8,10 @@ spec:
     app: loki
     component: loki
     tier: logging
+  type: NodePort
   ports:
   - name: http
     port: 3100
+    nodePort: 32031
   - name: grpc
     port: 9096
