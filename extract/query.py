@@ -26,7 +26,7 @@ class Query:
         return total, current
 
     def _request_entries(self, args, loki_client, start_time=None):
-        response = loki_client.query_range(args.query, start=start_time, limit=5)
+        response = loki_client.query_range(args.query, start=start_time, limit=args.limit)
         self._logger.debug("response:\n%s" % str(response))
         data = self._extract_data(response)
         #self._logger.debug("data:\n{}s".format(json.dumps(data, indent=4)))
@@ -70,6 +70,7 @@ class Query:
         if not loki_client.ready():
             raise RuntimeError("loki not ready")
 
+        counter = 0
         logs = {}
         processed = 0
         last_time_stamp = datetime.datetime.combine(datetime.date.today(), datetime.time(8))
@@ -78,9 +79,10 @@ class Query:
             processed += current
             self._logger.debug("received entries %s (%s) / %s" % (processed, current, total))
 
+            counter += 1
             added = 0
             for key, log_entries in received_logs.items():
-                self._logger.info("received logs for: %s:%s" % key)
+                self._logger.info("%03d: received logs for: %s:%s" % (counter, *key))
                 if key in logs:
                     old_entries = logs[key]
                     new_logs = self._remove_duplicates(old_entries, log_entries)

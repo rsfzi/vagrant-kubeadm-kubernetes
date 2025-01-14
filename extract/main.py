@@ -44,6 +44,7 @@ class Main:
         parser_labels.set_defaults(func=Labels)
         parser_query = subparsers.add_parser('query', help='query loki for log data')
         parser_query.add_argument('--url', default='http://10.0.0.10:32031', help="loki URL" + default)
+        parser_query.add_argument('--limit', default=100, help="query limit" + default)
         parser_query.add_argument('--query', required=True, help="query string")
         parser_query.set_defaults(func=Query)
 
