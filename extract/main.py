@@ -26,7 +26,7 @@ class Main:
             json_config['handlers']['console']['level'] = log_level
             if log_file_name:
                 json_config['handlers']['file']['filename'] = log_file_name
-                json_config['loggers']['root']['handlers'].append("file")
+                json_config['loggers']['']['handlers'].append("file")
         logging.config.dictConfig(json_config)
 
     def main(self):
