@@ -1,6 +1,7 @@
 
 import datetime
 import json
+import logging
 from typing import Dict, List
 from urllib.parse import urlparse, urlencode
 import urllib3
@@ -268,12 +269,15 @@ class LokiClient(object):
             params['end'] = int(datetime.datetime.now().timestamp() * 10 ** 9)
 
         if start:
-            if not isinstance(start, datetime.datetime):
+            if isinstance(start, str):
+                params['start'] = int(start)
+            elif not isinstance(start, datetime.datetime):
                 return False, {
                     'message':
                         f'Incorrect start type {type(start)}, should be type {datetime.datetime}.'}
-            # Convert to int, or will be scientific notation, which will result in request exception
-            params['start'] = int(start.timestamp() * 10 ** 9)
+            else:
+                # Convert to int, or will be scientific notation, which will result in request exception
+                params['start'] = int(start.timestamp() * 10 ** 9)
         else:
             params['start'] = int((datetime.datetime.fromtimestamp(params['end'] / 10 ** 9)
                                    - datetime.timedelta(hours=self.start_hours_delta)).timestamp()
