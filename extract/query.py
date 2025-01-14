@@ -26,7 +26,7 @@ class Query:
         return total, current
 
     def _request_entries(self, args, loki_client, start_time=None):
-        response = loki_client.query_range(args.query, start=start_time, limit=1000)
+        response = loki_client.query_range(args.query, start=start_time, limit=5)
         self._logger.debug("response:\n%s" % str(response))
         data = self._extract_data(response)
         #self._logger.debug("data:\n{}s".format(json.dumps(data, indent=4)))
@@ -61,7 +61,7 @@ class Query:
             if new_entry not in existing_logs:
                 result.append(new_entry)
             else:
-                self._logger.info("exclude: %s" % new_entry["log"])
+                self._logger.debug("exclude: %s" % new_entry["log"])
         return result
 
     def get_entries(self, args):
@@ -76,22 +76,25 @@ class Query:
         while True:
             total, current, results, last_time_stamp, received_logs = self._request_entries(args, loki_client, start_time=last_time_stamp)
             processed += current
-            self._logger.info("received entries %s (%s) / %s" % (processed, current, total))
+            self._logger.debug("received entries %s (%s) / %s" % (processed, current, total))
 
+            added = 0
             for key, log_entries in received_logs.items():
-                self._logger.info("logs for: %s:%s" % key)
+                self._logger.info("received logs for: %s:%s" % key)
                 if key in logs:
                     old_entries = logs[key]
                     new_logs = self._remove_duplicates(old_entries, log_entries)
                     logs[key].extend(new_logs)
+                    added += len(new_logs)
                 else:
                     logs[key] = log_entries
-            self._logger.info("last timestamp: %s" % last_time_stamp)
-            if processed >= total:
-                self._logger.info("received all %s entries" % total)
+                    added += len(log_entries)
+            self._logger.debug("last timestamp: %s" % last_time_stamp)
+            if not added:
                 break
         result_entries = []
         for key, log_entries in logs.items():
+            result_entries.append("#"*50)
             result_entries.append("Pod %s:%s" % key)
             for entry in log_entries:
                 result_entries.append(entry["log"])
