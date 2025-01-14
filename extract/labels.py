@@ -22,4 +22,9 @@ class Labels:
 
         response = loki_client.labels()
         labels = self._extract_data(response)
-        return labels
+        label_content = []
+        for label in labels:
+            response = loki_client.label_values(label)
+            label_values = self._extract_data(response)
+            label_content.append("%-8s: %s" % (label, ",".join(label_values)))
+        return label_content
