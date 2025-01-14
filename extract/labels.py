@@ -14,17 +14,23 @@ class Labels:
             raise RuntimeError("failure: %s" % status)
         return json_response["data"]
 
+    def get_label_values(self, loki_client):
+        response = loki_client.labels()
+        labels = self._extract_data(response)
+        label_content = {}
+        for label in labels:
+            response = loki_client.label_values(label)
+            label_content[label] = self._extract_data(response)
+        return label_content
+
     def get_entries(self, args):
         self._logger.debug("query loki")
         loki_client = LokiClient(url=args.url)
         if not loki_client.ready():
             raise RuntimeError("loki not ready")
 
-        response = loki_client.labels()
-        labels = self._extract_data(response)
+        label_values = self.get_label_values(loki_client)
         label_content = []
-        for label in labels:
-            response = loki_client.label_values(label)
-            label_values = self._extract_data(response)
+        for label, label_values in label_values.items():
             label_content.append("%-8s: %s" % (label, ",".join(label_values)))
         return label_content
