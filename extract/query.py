@@ -25,8 +25,19 @@ class Query:
         total = stats["summary"]["totalPostFilterLines"]
         return total, current
 
+    def _build_query(self, args):
+        filters = []
+        filters.append('task="%s"' % args.task)
+        if args.host:
+            filters.append('host="%s"' % args.host)
+        if args.pod:
+            filters.append('pod_name="%s"' % args.pod)
+        query = '{%s}' % ",".join(filters)
+        return query
+
     def _request_entries(self, args, loki_client, start_time=None):
-        response = loki_client.query_range(args.query, start=start_time, limit=args.limit)
+        query = self._build_query(args)
+        response = loki_client.query_range(query, start=start_time, limit=args.limit)
         self._logger.debug("response:\n%s" % str(response))
         data = self._extract_data(response)
         #self._logger.debug("data:\n{}s".format(json.dumps(data, indent=4)))
@@ -73,7 +84,8 @@ class Query:
         counter = 0
         logs = {}
         processed = 0
-        last_time_stamp = datetime.datetime.combine(datetime.date.today(), datetime.time(8))
+        last_time_stamp = None
+        #last_time_stamp = datetime.datetime.combine(datetime.date.today(), datetime.time(8))
         while True:
             total, current, results, last_time_stamp, received_logs = self._request_entries(args, loki_client, start_time=last_time_stamp)
             processed += current

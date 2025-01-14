@@ -266,7 +266,8 @@ class LokiClient(object):
             # Convert to int, or will be scientific notation, which will result in request exception
             params['end'] = int(end.timestamp() * 10 ** 9)
         else:
-            params['end'] = int(datetime.datetime.now().timestamp() * 10 ** 9)
+            #params['end'] = int(datetime.datetime.now().timestamp() * 10 ** 9)
+            pass
 
         if start:
             if isinstance(start, str):
@@ -279,9 +280,10 @@ class LokiClient(object):
                 # Convert to int, or will be scientific notation, which will result in request exception
                 params['start'] = int(start.timestamp() * 10 ** 9)
         else:
-            params['start'] = int((datetime.datetime.fromtimestamp(params['end'] / 10 ** 9)
-                                   - datetime.timedelta(hours=self.start_hours_delta)).timestamp()
-                                  * 10 ** 9)
+            #params['start'] = int((datetime.datetime.fromtimestamp(params['end'] / 10 ** 9)
+            #                       - datetime.timedelta(hours=self.start_hours_delta)).timestamp()
+            #                      * 10 ** 9)
+            pass
 
         if limit:
             params['limit'] = limit
