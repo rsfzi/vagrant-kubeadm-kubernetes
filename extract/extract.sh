@@ -4,4 +4,4 @@ script_dir=`dirname $(readlink -f "$0")`
 activate=$script_dir/venv/bin/activate
 . $activate
 py=$script_dir/main.py
-python -O $py $@
+python -O $py "$@"
