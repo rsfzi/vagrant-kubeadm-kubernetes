@@ -33,7 +33,7 @@
         "console"
       ]
     },
-    "pika": {
+    "urllib3": {
       "level": "INFO",
       "handlers": [
         "file"
