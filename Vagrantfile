@@ -125,6 +125,8 @@ Vagrant.configure("2") do |config|
       node.vm.provision "shell", inline: <<-SHELL
           mkdir /var/lib/loki
           mkdir /var/lib/grafana
+          mkdir /etc/grafana
+          ln -s /vagrant/grafana /etc/grafana/provisioning
       SHELL
       if settings["nodes"]["control"]
       node.vm.provision "shell", path: "scripts/node.sh"
