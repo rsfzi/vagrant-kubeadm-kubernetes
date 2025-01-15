@@ -25,11 +25,12 @@ spec:
             - '--web.enable-lifecycle'
           ports:
             - containerPort: 9090
-          #resources:
-          #  requests:
-          #    memory: 32Mi
-          #  limits:
-          #    memory: 128Mi
+          resources:
+            requests:
+              memory: 32Mi
+              cpu: 500m
+            limits:
+              memory: 128Mi
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus/
