@@ -12,3 +12,6 @@ We have also powered off our cluster(s) before and for the most part did this:
 7.  Backup dirs/etcd if needed.
 
 Bringing it backup is essentially the opposite order.
+
+Restart single pod:
+kubectl rollout restart deployment prometheus  -n prometheus
