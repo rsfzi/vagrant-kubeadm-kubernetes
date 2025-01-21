@@ -7,6 +7,7 @@ echo "Install Prometheus..."
 #     https://github.com/techiescamp/kubernetes-prometheus/tree/master
 
 kubectl apply -f /vagrant/prometheus-namespace.yaml
+kubectl apply -f /vagrant/prometheus-cluster-role.yaml
 kubectl apply -f /vagrant/prometheus-configmap.yaml
 #kubectl apply -f /vagrant/grafana-pvc.yaml
 #kubectl apply -f /vagrant/grafana-pv.yaml
