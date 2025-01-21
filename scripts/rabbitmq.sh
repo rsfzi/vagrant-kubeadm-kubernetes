@@ -10,3 +10,8 @@ set -euxo pipefail
 echo "Creating rabbitmq service and statefulset..."
 kubectl apply -f /vagrant/rabbitmq-service.yaml
 kubectl apply -f /vagrant/rabbitmq-statefulset.yaml
+
+# CLI
+# kubectl exec --stdin --tty rabbitmq-0 -- /bin/bash
+# https://stackoverflow.com/questions/70957962/rabbitmq-consumer-timeout-behavior-not-working-as-expected
+
