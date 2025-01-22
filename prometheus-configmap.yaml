@@ -24,3 +24,7 @@ data:
         - source_labels: [__meta_kubernetes_endpoints_name]
           regex: 'node-exporter'
           action: keep              
+      - job_name: "rabbitmq"
+        static_configs:
+          #- targets: ["10.0.0.10:32002"]
+          - targets: ["rabbitmq-0.rabbitmq-service.default:15692"]            

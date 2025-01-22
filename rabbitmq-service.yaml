@@ -8,8 +8,11 @@ spec:
   type: NodePort
   ports:
   - name: rabbitmq-nodeport
-    nodePort: 32001 # Your desired port
+    nodePort: 32001
     port: 5672
+  - name: rabbitmq-prometheus
+    nodePort: 32002
+    port: 15692
   selector:
     app.kubernetes.io/name: task-queue
     app.kubernetes.io/component: rabbitmq
