@@ -131,6 +131,25 @@ Vagrant.configure("2") do |config|
       if settings["nodes"]["control"]
       node.vm.provision "shell", path: "scripts/node.sh"
 
+      if i == 1
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/loki.sh"
+        end
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/fluentbit.sh"
+        end
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/prometheus.sh"
+        end
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/grafana.sh"
+        end
+      end
+
       # Only install the dashboard after provisioning the last worker (and when enabled).
       if i == NUM_WORKER_NODES
         if settings["software"]["dashboard"] and settings["software"]["dashboard"] != ""
@@ -138,10 +157,10 @@ Vagrant.configure("2") do |config|
             s.privileged= false
             s.path= "scripts/dashboard.sh"
           end
-        end
-        node.vm.provision "shell" do |s|
-          s.privileged= false
-          s.path= "scripts/image_registry.sh"
+          node.vm.provision "shell" do |s|
+            s.privileged= false
+            s.path= "scripts/image_registry.sh"
+          end
         end
       end
       end
