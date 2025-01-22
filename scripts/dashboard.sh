@@ -65,7 +65,7 @@ EOF
   # Add kubernetes-dashboard repository
   helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
   # Deploy a Helm Release named "kubernetes-dashboard" using the kubernetes-dashboard chart
-  helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard --version ${DASHBOARD_VERSION}
+  helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard --version ${DASHBOARD_VERSION} -f /vagrant/dashboard_values.yaml
 
   echo "Serve dashboard on NodePort 32000"
   kubectl apply -f /vagrant/dashboard_proxy.yaml
