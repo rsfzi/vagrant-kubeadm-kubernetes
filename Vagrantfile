@@ -76,8 +76,6 @@ Vagrant.configure("2") do |config|
     controlplane.vm.provision "shell",
       path: "scripts/helm.sh"
     controlplane.vm.provision "shell",
-      path: "scripts/rabbitmq.sh"
-    controlplane.vm.provision "shell",
       path: "scripts/wireguard.sh"
     controlplane.vm.provision "file", 
       source: "hooks/50-ifup-hooks", 
@@ -132,6 +130,10 @@ Vagrant.configure("2") do |config|
       node.vm.provision "shell", path: "scripts/node.sh"
 
       if i == 1
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/rabbitmq.sh"
+        end
         node.vm.provision "shell" do |s|
           s.privileged= false
           s.path= "scripts/loki.sh"
