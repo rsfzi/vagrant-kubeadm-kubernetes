@@ -2,13 +2,11 @@
 
 set -euxo pipefail
 
-echo "Install Loki ..."
-# see https://vadosware.io/post/installing-fluent-bit-and-loki-for-lightweight-logs/
-#helm repo add grafana https://grafana.github.io/helm-charts
-#helm -n loki install --create-namespace loki grafana/loki -f /vagrant/loki_values.yaml
-#helm -n loki upgrade --install --create-namespace loki grafana/loki -f /vagrant/loki_values.yaml
+echo "Install Grafana ..."
 
 kubectl apply -f /vagrant/grafana-namespace.yaml
 kubectl apply -f /vagrant/grafana-pvc.yaml
 kubectl apply -f /vagrant/grafana-pv.yaml
 kubectl apply -f /vagrant/grafana-deployment.yaml
+
+# see: https://grafana.com/blog/2024/05/30/how-to-export-any-grafana-visualization-to-a-csv-file-microsoft-excel-or-google-sheets/
