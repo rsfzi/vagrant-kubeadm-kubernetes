@@ -4,6 +4,8 @@
 
 set -euxo pipefail
 
+PRIORITY="${NODE_PRIORITY:-0}"
+
 mkdir -p /var/lib/registry
 
 config_path="/vagrant/configs"
@@ -17,6 +19,7 @@ sudo cp -i $config_path/config /home/vagrant/.kube/
 sudo chown 1000:1000 /home/vagrant/.kube/config
 NODENAME=$(hostname -s)
 kubectl label node $(hostname -s) node-role.kubernetes.io/worker=worker
+kubectl label node $(hostname -s) node-priority.simexp=$PRIORITY
 EOF
 
 cat << EOF >> /etc/containers/registries.conf

@@ -127,7 +127,11 @@ Vagrant.configure("2") do |config|
           ln -s /vagrant/grafana /etc/grafana/provisioning
       SHELL
       if settings["nodes"]["control"]
-      node.vm.provision "shell", path: "scripts/node.sh"
+        node.vm.provision "shell",
+          env: {
+            "NODE_PRIORITY" => "10"
+          },
+          path: "scripts/node.sh"
 
       if i == 1
         node.vm.provision "shell" do |s|
