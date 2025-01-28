@@ -30,3 +30,19 @@ data:
         static_configs:
           #- targets: ["10.0.0.10:32002"]
           - targets: ["rabbitmq-0.rabbitmq-service.default:15692"]            
+      - job_name: 'kube-state-metrics'
+        static_configs:
+          - targets: ['kube-state-metrics.state:8080']
+        #kubernetes_sd_configs:
+        #- role: endpoints
+        #relabel_configs:
+        #- source_labels: [__meta_kubernetes_service_name]
+        #  regex: kube-state-metrics
+        #  action: keep
+        #- action: labelmap
+        #  regex: __meta_kubernetes_service_label_(.+)
+        #- source_labels: [__meta_kubernetes_namespace]
+        #  action: replace
+        #  target_label: kubernetes_namespace
+        #- source_labels: [__meta_kubernetes_service_name]
+        #  action: replace
