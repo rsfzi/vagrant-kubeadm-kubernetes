@@ -148,6 +148,10 @@ Vagrant.configure("2") do |config|
         end
         node.vm.provision "shell" do |s|
           s.privileged= false
+          s.path= "scripts/kube-state-metrics.sh"
+        end
+        node.vm.provision "shell" do |s|
+          s.privileged= false
           s.path= "scripts/prometheus.sh"
         end
         node.vm.provision "shell" do |s|
