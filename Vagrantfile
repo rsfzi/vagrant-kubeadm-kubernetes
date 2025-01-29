@@ -9,9 +9,21 @@ IP_NW = IP_SECTIONS.captures[0]
 # Last octet excluding all dots:
 IP_START = Integer(IP_SECTIONS.captures[1])
 NUM_WORKER_NODES = settings["nodes"]["workers"]["count"]
+HOST_NAME = "#{`hostname`.strip}".delete_prefix("se-")
 WORKER_PREFIX = ""
 if settings["nodes"]["workers"]["prefix"]
   WORKER_PREFIX = settings["nodes"]["workers"]["prefix"]
+else
+  if not settings["nodes"]["control"]
+    WORKER_PREFIX = HOST_NAME + "-"
+  end
+end
+CLUSTER_NAME = ""
+if settings["cluster_name"] and settings["cluster_name"] != ""
+  CLUSTER_NAME = settings["cluster_name"]
+  if not settings["nodes"]["control"]
+    CLUSTER_NAME << " - " + HOST_NAME
+  end
 end
 
 Vagrant.configure("2") do |config|
@@ -51,8 +63,8 @@ Vagrant.configure("2") do |config|
     controlplane.vm.provider "virtualbox" do |vb|
         vb.cpus = settings["nodes"]["control"]["cpu"]
         vb.memory = settings["nodes"]["control"]["memory"]
-        if settings["cluster_name"] and settings["cluster_name"] != ""
-          vb.customize ["modifyvm", :id, "--groups", ("/" + settings["cluster_name"])]
+        if CLUSTER_NAME != ""
+          vb.customize ["modifyvm", :id, "--groups", ("/" + CLUSTER_NAME)]
         end
         vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
     end
@@ -102,8 +114,8 @@ Vagrant.configure("2") do |config|
       node.vm.provider "virtualbox" do |vb|
           vb.cpus = settings["nodes"]["workers"]["cpu"]
           vb.memory = settings["nodes"]["workers"]["memory"]
-          if settings["cluster_name"] and settings["cluster_name"] != ""
-            vb.customize ["modifyvm", :id, "--groups", ("/" + settings["cluster_name"])]
+          if CLUSTER_NAME != ""
+            vb.customize ["modifyvm", :id, "--groups", ("/" + CLUSTER_NAME)]
           end
       end
       node.vm.provision "shell",
