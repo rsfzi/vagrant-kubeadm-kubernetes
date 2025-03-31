@@ -1,7 +1,19 @@
 gateway:
+# per subnet:
 iptables -I FORWARD -s 10.0.0.10/32 -d 10.1.0.10/32 -j ACCEPT
 iptables -I FORWARD -d 10.0.0.0/24 -i wg0 -j ACCEPT
 
+# in wireguard conf:
+PreUp = iptables -I FORWARD -s 10.0.0.10/32 -d 10.1.0.0/24 -j ACCEPT
+PreUp = iptables -I FORWARD -s 10.0.0.10/32 -d 10.1.1.0/24 -j ACCEPT
+PreUp = iptables -I FORWARD -d 10.0.0.10/32 -i wg0 -j ACCEPT
+#PreUp = iptables -I FORWARD -p icmp -j LOG --log-prefix "[FW]: " --log-level 7
+PostDown = iptables -D FORWARD -s 10.0.0.10/32 -d 10.1.0.0/24 -j ACCEPT
+PostDown = iptables -D FORWARD -s 10.0.0.10/32 -d 10.1.1.0/24 -j ACCEPT
+PostDown = iptables -D FORWARD -d 10.0.0.10/32 -i wg0 -j ACCEPT
+#PostDown = iptables -D FORWARD -p icmp -j LOG --log-prefix "[FW]: " --log-level 7
+
 controlplane:
+# manual execution
 ip route add 10.1.0.0/24 via 10.0.0.1 dev eth1
 
