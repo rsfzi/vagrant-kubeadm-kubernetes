@@ -68,6 +68,10 @@ Vagrant.configure("2") do |config|
         end
         vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
     end
+    controlplane.vm.provision "shell" do |s|
+      s.privileged= false
+      s.inline= "cat /vagrant/cluster_rsa.pub >> ~/.ssh/authorized_keys"
+    end
     controlplane.vm.provision "shell",
       env: {
         "DNS_SERVERS" => settings["network"]["dns_servers"].join(" "),
@@ -117,6 +121,10 @@ Vagrant.configure("2") do |config|
           if CLUSTER_NAME != ""
             vb.customize ["modifyvm", :id, "--groups", ("/" + CLUSTER_NAME)]
           end
+      end
+      node.vm.provision "shell" do |s|
+        s.privileged= false
+        s.inline= "cat /vagrant/cluster_rsa.pub >> ~/.ssh/authorized_keys"
       end
       node.vm.provision "shell",
         env: {
