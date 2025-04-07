@@ -42,6 +42,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get install -y podman
     apt-get install -y amqp-tools
+    apt-get install -y fish
   SHELL
 
   if `uname -m`.strip == "aarch64"
