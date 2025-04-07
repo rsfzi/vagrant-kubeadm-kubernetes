@@ -1,0 +1,9 @@
+Kubernetes dashboard:
+https://10.0.0.10:32000/
+
+Grafana:
+http://10.0.0.10:30300/
+
+Prometheus:
+http://10.0.0.10:30090/
+
