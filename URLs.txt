@@ -1,6 +1,12 @@
 Kubernetes dashboard:
 https://10.0.0.10:32000/
 
+Kubernetes API:
+https://10.0.0.10:6443/
+
+RabbitMQ API:
+https://10.0.0.10:32001/
+
 Grafana:
 http://10.0.0.10:30300/
 
