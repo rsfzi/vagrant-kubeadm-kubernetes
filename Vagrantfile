@@ -9,7 +9,7 @@ IP_NW = IP_SECTIONS.captures[0]
 # Last octet excluding all dots:
 IP_START = Integer(IP_SECTIONS.captures[1])
 NUM_WORKER_NODES = settings["nodes"]["workers"]["count"]
-HOST_NAME = "#{`hostname`.strip}".delete_prefix("se-")
+HOST_NAME = "#{`hostname`.strip.downcase}".delete_prefix("se-")
 WORKER_PREFIX = ""
 if settings["nodes"]["workers"]["prefix"]
   WORKER_PREFIX = settings["nodes"]["workers"]["prefix"]
