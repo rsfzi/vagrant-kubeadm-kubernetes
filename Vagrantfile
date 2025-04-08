@@ -150,7 +150,7 @@ Vagrant.configure("2") do |config|
       if settings["nodes"]["control"]
         node.vm.provision "shell",
           env: {
-            "NODE_PRIORITY" => "10"
+            "NODE_PRIORITY" => "5"
           },
           path: "scripts/node.sh"
 
