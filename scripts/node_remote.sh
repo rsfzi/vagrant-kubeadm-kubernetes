@@ -67,9 +67,12 @@ AllowedIPs = 10.1.0.1/32,10.0.0.10/32
 PersistentKeepalive = 30
 EOF
 
+systemctl enable wg-quick@wg0
 systemctl restart wg-quick@wg0
 
-#export PRIORITY="${NODE_PRIORITY:-5}"
+cat << EOF  > /etc/default/kubelet
+KUBELET_EXTRA_ARGS=--node-ip=$ADDRESS
+EOF
 
 /bin/bash $script_path/node.sh
 
