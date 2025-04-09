@@ -20,5 +20,5 @@ PostDown = iptables -D FORWARD -d 10.0.0.10/32 -i wg0 -j ACCEPT
 
 controlplane:
 # manual execution
-ip route add 10.1.0.0/24 via 10.0.0.1 dev eth1
+sudo ip route add 10.1.0.0/24 via 10.0.0.1 dev eth1
 
