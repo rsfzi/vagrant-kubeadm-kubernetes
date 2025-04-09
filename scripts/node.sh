@@ -4,7 +4,7 @@
 
 set -euxo pipefail
 
-PRIORITY="${NODE_PRIORITY:-0}"
+PRIORITY="${NODE_PRIORITY:-5}"
 
 mkdir -p /var/lib/registry
 

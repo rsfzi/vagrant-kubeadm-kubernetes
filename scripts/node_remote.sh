@@ -2,13 +2,13 @@
 #
 # Setup for Node remote worker
 
-set -euxo pipefail
+set -euo pipefail
 
 usage()
 {
-cat << EOF
+cat << EOF_HELP
 Usage: $(basename $0) -i ip address -g gateway [-p priority]
-EOF
+EOF_HELP
 }
 
 ADDRESS=
@@ -24,7 +24,7 @@ while getopts 'i:g:p:h' opt; do
       ;;
 
     p)
-      NODE_PRIORITY=${OPTARG}
+      export NODE_PRIORITY=${OPTARG}
       ;;
 
     ?|h)
@@ -44,32 +44,36 @@ fi
 script_path="/vagrant/scripts"
 config_path="/vagrant/configs"
 
-#NODENAME=$(hostname -s)
-NODENAME="$(tr '[:lower:]' <<< "$(hostname -s)")"
+PORT=51820
+
+NODENAME="$(tr '[:upper:]' '[:lower:]' <<< $(hostname -s))"
 read -r PRIVATE_KEY < host_${NODENAME}.key
 
 read -r GW_PUBLIC_KEY < $config_path/host_controlplane.pub
 
-cat << EOF  > /tmp/wg0.conf
+cat << EOF  > /etc/wireguard/wg0.conf
 # local settings 
 [Interface]
 PrivateKey = $PRIVATE_KEY
 Address = $ADDRESS/32
-ListenPort = 51821
+#ListenPort = 51821
+#ListenPort = $PORT
 
-# remote settings for Hub
+# remote GW settings
 [Peer]
 PublicKey = $GW_PUBLIC_KEY
-Endpoint = $GATEWAY
+Endpoint = $GATEWAY:$PORT
 AllowedIPs = 10.1.0.1/32,10.0.0.10/32
 PersistentKeepalive = 30
 EOF
 
-export PRIORITY="${NODE_PRIORITY:-5}"
+systemctl restart wg-quick@wg0
 
-#/bin/bash $script_path/node.sh
+#export PRIORITY="${NODE_PRIORITY:-5}"
 
-#sudo -i -u vagrant bash << EOF
-#kubectl taint nodes $(hostname -s) remote=true:NoExecute --overwrite=true
-#EOF
+/bin/bash $script_path/node.sh
+
+sudo -i -u vagrant bash << EOF
+kubectl taint nodes $(hostname -s) remote=true:NoExecute --overwrite=true
+EOF
 
