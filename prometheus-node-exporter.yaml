@@ -58,6 +58,10 @@ spec:
       - hostPath:
           path: /
         name: root
+      tolerations:
+      - key: "remote"
+        operator: "Exists"
+        effect: "NoExecute"          
 ---
 kind: Service
 apiVersion: v1
