@@ -110,6 +110,13 @@ Vagrant.configure("2") do |config|
       node.vm.hostname = "#{WORKER_PREFIX}node0#{i}"
       if WORKER_PREFIX == ""
         node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
+        node.vm.provision "file", 
+          source: "hooks/50-ifup-hooks", 
+          destination: "/tmp/"
+        node.vm.provision "shell", inline: <<-SHELL
+          cp /tmp/50-ifup-hooks /etc/networkd-dispatcher/routable.d/
+          ln -s /etc/networkd-dispatcher/routable.d/50-ifup-hooks /etc/networkd-dispatcher/degraded.d/
+        SHELL
       end
       if settings["shared_folders"]
         settings["shared_folders"].each do |shared_folder|
