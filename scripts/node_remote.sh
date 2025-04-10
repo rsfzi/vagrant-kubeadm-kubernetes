@@ -63,7 +63,7 @@ Address = $ADDRESS/32
 [Peer]
 PublicKey = $GW_PUBLIC_KEY
 Endpoint = $GATEWAY:$PORT
-AllowedIPs = 10.1.0.1/32,10.0.0.10/32
+AllowedIPs = 10.1.0.1/32,10.0.0.0/24
 PersistentKeepalive = 30
 EOF
 
