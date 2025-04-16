@@ -12,13 +12,17 @@ To Shutdown:
       sudo /vagrant/scripts/shutdown_node.sh
 4.  check with vagrant status
 
+To Start:
+1.  Start nodes:
+    vagrant up controlplane
+    vagrant up node01
+    vagrant up node02
+1.  Start cluster:
+    vagrant ssh controlplane
+    kubectl uncordon node01
+    kubectl uncordon node02
 
-Shut down all components but kube-apiserver and etcd. – If using kubelet to manage components (kubeadm), just move the manifests out of the /etc/kubernetes/manifests dir and kubelet will stop the containers gracefully.
-5.  shut down kube-apiserver
-6.  Stop kubelet on control plane, just ensure the etcd leader is the last one to be stopped.
-7.  Backup dirs/etcd if needed.
 
-Bringing it backup is essentially the opposite order.
 
-Restart single pod:
+Restart a single pod:
 kubectl rollout restart deployment prometheus  -n prometheus
