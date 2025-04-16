@@ -1,6 +1,7 @@
 To Shutdown:
 1.  delete all deployments
 2.  Drain all nodes excluding the control plane:
+    vagrant ssh controlplane
     kubectl drain --ignore-daemonsets  --delete-emptydir-data node02
     kubectl drain --ignore-daemonsets  --delete-emptydir-data node01
 3.  Shut down nodes:
@@ -17,7 +18,7 @@ To Start:
     vagrant up controlplane
     vagrant up node01
     vagrant up node02
-1.  Start cluster:
+2.  Start cluster:
     vagrant ssh controlplane
     kubectl uncordon node01
     kubectl uncordon node02
