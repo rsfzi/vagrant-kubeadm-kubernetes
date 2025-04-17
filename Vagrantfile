@@ -43,6 +43,7 @@ Vagrant.configure("2") do |config|
     apt-get install -y podman
     apt-get install -y amqp-tools
     apt-get install -y fish
+    apt-get install -y unzip
   SHELL
   
   config.vm.provision "shell", inline: <<-SHELL
