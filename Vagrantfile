@@ -50,6 +50,11 @@ Vagrant.configure("2") do |config|
     chmod 744 /home/vagrant/shutdown_node.sh
   SHELL
 
+  config.vm.provision "shell", privileged:false, inline: <<-SHELL
+    cp /vagrant/cluster_rsa* /home/vagrant/.ssh/
+    chmod 600 /home/vagrant/.ssh/cluster_rsa
+  SHELL
+
   if `uname -m`.strip == "aarch64"
     config.vm.box = settings["software"]["box"] + "-arm64"
   else
