@@ -6,11 +6,11 @@ To Shutdown:
     kubectl drain --ignore-daemonsets  --delete-emptydir-data node01
 3.  Shut down nodes:
     ssh node02
-      sudo /vagrant/scripts/shutdown_node.sh
+      sudo ./shutdown_node.sh
     ssh node01
-      sudo /vagrant/scripts/shutdown_node.sh
+      sudo ./shutdown_node.sh
     ssh controlplane
-      sudo /vagrant/scripts/shutdown_node.sh
+      sudo ./shutdown_node.sh
 4.  check with vagrant status
 
 To Start:

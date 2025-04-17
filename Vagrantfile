@@ -44,6 +44,11 @@ Vagrant.configure("2") do |config|
     apt-get install -y amqp-tools
     apt-get install -y fish
   SHELL
+  
+  config.vm.provision "shell", inline: <<-SHELL
+    cp /vagrant/scripts/shutdown_node.sh /home/vagrant
+    chmod 744 /home/vagrant/shutdown_node.sh
+  SHELL
 
   if `uname -m`.strip == "aarch64"
     config.vm.box = settings["software"]["box"] + "-arm64"
