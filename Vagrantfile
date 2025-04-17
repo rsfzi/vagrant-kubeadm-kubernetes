@@ -31,11 +31,12 @@ Vagrant.configure("2") do |config|
     sed -i 's/GRUB_TIMEOUT=0/GRUB_TIMEOUT=3\nGRUB_RECORDFAIL_TIMEOUT=3/' /etc/default/grub
     update-grub
   SHELL
-  config.vm.provision "shell", env: { "IP_NW" => IP_NW, "IP_START" => IP_START, "NUM_WORKER_NODES" => NUM_WORKER_NODES }, inline: <<-SHELL
+  config.vm.provision "shell", env: { "IP_NW" => IP_NW, "IP_START" => IP_START, "NUM_WORKER_NODES" => NUM_WORKER_NODES, "WORKER_PREFIX" => WORKER_PREFIX }, inline: <<-SHELL
       apt-get update -y
+      echo "### kubernetes entries" >> /etc/hosts
       echo "$IP_NW$((IP_START)) controlplane" >> /etc/hosts
       for i in `seq 1 ${NUM_WORKER_NODES}`; do
-        echo "$IP_NW$((IP_START+i)) $WORKER_PREFIXnode0${i}" >> /etc/hosts
+        echo "$IP_NW$((IP_START+i)) ${WORKER_PREFIX}node0${i}" >> /etc/hosts
       done
   SHELL
   
