@@ -4,6 +4,7 @@ metadata:
   labels:
     component: rabbitmq
   name: rabbitmq
+  namespace: messaging
 spec:
   replicas: 1
   serviceName: rabbitmq-service

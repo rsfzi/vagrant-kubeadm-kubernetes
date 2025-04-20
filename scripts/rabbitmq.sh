@@ -8,6 +8,7 @@ set -euxo pipefail
 #kubectl apply -f https://github.com/rabbitmq/cluster-operator/releases/download/v${RABBITMQ_VERSION}/cluster-operator.yml
 
 echo "Creating rabbitmq service and statefulset..."
+kubectl apply -f /vagrant/rabbitmq-namespace.yaml
 kubectl apply -f /vagrant/rabbitmq-service.yaml
 kubectl apply -f /vagrant/rabbitmq-statefulset.yaml
 
