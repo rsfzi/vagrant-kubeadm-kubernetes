@@ -11,5 +11,5 @@ kubectl apply -f /vagrant/prometheus-cluster-role.yaml
 kubectl apply -f /vagrant/prometheus-configmap.yaml
 #kubectl apply -f /vagrant/grafana-pvc.yaml
 #kubectl apply -f /vagrant/grafana-pv.yaml
-kubectl apply -f /vagrant/prometheus-node-exporter.yaml
+kubectl apply -f /vagrant/node-exporter.yaml
 kubectl apply -f /vagrant/prometheus-deployment.yaml
