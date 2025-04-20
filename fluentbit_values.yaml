@@ -290,7 +290,10 @@ podDisruptionBudget:
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - key: "remote"
+    operator: "Exists"
+    effect: "NoExecute"          
 
 affinity: {}
 
