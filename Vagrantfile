@@ -27,6 +27,7 @@ if settings["cluster_name"] and settings["cluster_name"] != ""
 end
 
 Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: "timedatectl set-timezone Europe/Berlin"
   config.vm.provision "shell", inline: <<-'SHELL'
     sed -i 's/GRUB_TIMEOUT=0/GRUB_TIMEOUT=3\nGRUB_RECORDFAIL_TIMEOUT=3/' /etc/default/grub
     update-grub
