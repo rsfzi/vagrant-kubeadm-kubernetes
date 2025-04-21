@@ -45,6 +45,7 @@ Vagrant.configure("2") do |config|
     apt-get install -y amqp-tools
     apt-get install -y fish
     apt-get install -y unzip
+    apt-get install -y ncdu
   SHELL
   
   config.vm.provision "shell", inline: <<-SHELL
@@ -165,6 +166,7 @@ Vagrant.configure("2") do |config|
           mkdir /var/lib/grafana
           mkdir /etc/grafana
           ln -s /vagrant/grafana /etc/grafana/provisioning
+          mkdir /var/lib/openobserve
       SHELL
       if settings["nodes"]["control"]
         node.vm.provision "shell",
@@ -181,6 +183,10 @@ Vagrant.configure("2") do |config|
         node.vm.provision "shell" do |s|
           s.privileged= false
           s.path= "scripts/loki.sh"
+        end
+        node.vm.provision "shell" do |s|
+          s.privileged= false
+          s.path= "scripts/openobserve.sh"
         end
         node.vm.provision "shell" do |s|
           s.privileged= false

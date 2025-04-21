@@ -13,3 +13,7 @@ http://10.0.0.10:30300/
 Prometheus:
 http://10.0.0.10:30090/
 
+OpenObserve
+http://10.0.0.10:32080/
+root@example.com
+admin

@@ -449,6 +449,20 @@ config:
         #auto_kubernetes_labels on
         Host  loki.loki
         #Log_Level trace
+        
+    [OUTPUT]
+        Name http
+        Match kube.*
+        URI  /api/default/simexp/_json
+        Host openobserve.openobserve
+        Port 5080
+        compress gzip
+        tls  Off
+        Format json
+        Json_date_key    _timestamp
+        Json_date_format iso8601
+        HTTP_User root@example.com
+        HTTP_Passwd admin
 
   ## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/classic-mode/upstream-servers
   ## This configuration is deprecated, please use `extraFiles` instead.
