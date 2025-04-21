@@ -162,7 +162,6 @@ Vagrant.configure("2") do |config|
       node.vm.provision "shell",
         path: "scripts/wireguard.sh"
       node.vm.provision "shell", inline: <<-SHELL
-          mkdir /var/lib/loki
           mkdir /var/lib/grafana
           mkdir /etc/grafana
           ln -s /vagrant/grafana /etc/grafana/provisioning
@@ -179,10 +178,6 @@ Vagrant.configure("2") do |config|
         node.vm.provision "shell" do |s|
           s.privileged= false
           s.path= "scripts/rabbitmq.sh"
-        end
-        node.vm.provision "shell" do |s|
-          s.privileged= false
-          s.path= "scripts/loki.sh"
         end
         node.vm.provision "shell" do |s|
           s.privileged= false

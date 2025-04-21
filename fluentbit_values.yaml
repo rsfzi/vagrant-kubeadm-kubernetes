@@ -440,17 +440,6 @@ config:
         #Match kube.var.log.containers.simexp.*
 
     [OUTPUT]
-        Name   loki
-        Match  kube.*
-        #Match simexp*
-        #Match kube.simexp.*
-        #Match kube.var.log.containers.simexp.*
-        Labels task=simexp, job_name=$kubernetes['labels']['job-name'], pod_name=$kubernetes['pod_name'], host=$kubernetes['host']
-        #auto_kubernetes_labels on
-        Host  loki.loki
-        #Log_Level trace
-        
-    [OUTPUT]
         Name http
         Match kube.*
         URI  /api/default/simexp/_json
