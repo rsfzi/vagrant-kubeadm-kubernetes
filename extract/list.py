@@ -19,11 +19,7 @@ class List(BaseQuery):
         FROM "simexp" 
         """.format(field)
 
-        now = datetime.datetime.now()
-        start = now - datetime.timedelta(hours=48)
-        end_time = int(now.timestamp() * 10 ** 6)
-        start_time =int(start.timestamp() * 10 ** 6)
-
+        start_time, end_time = self._get_times(datetime.timedelta(hours=48))
         total, entries = self._request_entries(args, sql_query, field, start_time, end_time, count=1000)
         return entries
 

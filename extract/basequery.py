@@ -1,5 +1,6 @@
 import logging
 import http
+import datetime
 
 import requests
 from requests.auth import HTTPBasicAuth
@@ -7,6 +8,16 @@ from requests.auth import HTTPBasicAuth
 class BaseQuery:
     def __init__(self):
         self._logger = logging.getLogger(__name__)
+
+    def _get_times(self, delta, from_time=None):
+        if from_time is None:
+            from_time = datetime.datetime.now()
+        now = from_time
+        start = now - delta
+        end_time = int(now.timestamp() * 10 ** 6)
+        start_time =int(start.timestamp() * 10 ** 6)
+        return start_time, end_time
+
 
     def _request_entries(self, args, sql_query, field, start_time, end_time, count, start_entry=0):
         url = "http://{}:32080/api/default/_search".format(args.host)
