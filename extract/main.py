@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from list import List
+from list import ListPods, ListNodes
 from extract import Extract
 
 class Main:
@@ -39,14 +39,14 @@ class Main:
         parser.add_argument('--password', default="admin", help="admin")
         subparsers = parser.add_subparsers(help='subcommand help')
         parser_list = subparsers.add_parser('list', help='list log attributes')
-        #parser_query.add_argument('--url', default='http://10.0.0.10:32031', help="loki URL" + default)
-        #parser_query.add_argument('--limit', default=100, help="query limit" + default)
-        #parser_query.add_argument('--task', default="simexp", help="task name filter" + default)
-        #parser_query.add_argument('--host', help="host name filter")
-        #parser_query.add_argument('--pod', help="pod name filter")
-        parser_list.set_defaults(func=List)
+        subparsers_list = parser_list.add_subparsers(help='list subcommands help', required=True)
+        parser_list_pods = subparsers_list.add_parser('pods', help='list pods')
+        parser_list_pods.set_defaults(func=ListPods)
+        parser_list_nodes = subparsers_list.add_parser('nodes', help='list nodes')
+        parser_list_nodes.set_defaults(func=ListNodes)
         parser_extract = subparsers.add_parser('extract', help='extract log data from openobserve')
         parser_extract.set_defaults(func=Extract)
+        #parser_query.add_argument('--limit', default=100, help="query limit" + default)
 
         args = parser.parse_args()
 
