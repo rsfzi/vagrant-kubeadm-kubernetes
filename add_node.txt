@@ -3,5 +3,5 @@ kubeadm token create --print-join-command
 
 # restart
 kubectl delete  daemonset -n monitoring node-exporter
-kubectl apply -f /vagrant/prometheus-node-exporter.yaml
+kubectl apply -f /vagrant/node-exporter.yaml
 
