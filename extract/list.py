@@ -6,7 +6,8 @@ import http
 import requests
 from requests.auth import HTTPBasicAuth
 
-class Extract:
+
+class List:
     def __init__(self):
         self._logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class Extract:
         total = results["total"]
         self._logger.info("received {} entries".format(total))
         #scan_records =
-        entries = [row['log'] for row in results.get("hits", [])]
+        entries = [row['kubernetes_pod_name'] for row in results.get("hits", [])]
         return total, entries
 
     def get_entries(self, args):
@@ -39,10 +40,8 @@ class Extract:
         auth = HTTPBasicAuth("root@example.com", "admin")
 
         sql_query = """
-        SELECT log 
-        FROM 'simexp'
-        WHERE kubernetes_pod_name = 'simexp-c6f6d95f4-ljb99'
-        ORDER by _timestamp DESC 
+        SELECT DISTINCT kubernetes_pod_name 
+        FROM "simexp" 
         """
 
         now = datetime.datetime.now()
@@ -53,10 +52,6 @@ class Extract:
         url = "{}/api/default/_search".format(base_url)
 
         start_entry = 0
-        request_size = 20000
+        request_size = 10000
         total, entries = self._request_entries(url, auth, sql_query, start_time, end_time, start_entry, request_size)
-        while total >= request_size:
-            start_entry += total
-            total, new_entries = self._request_entries(url, auth, sql_query, start_time, end_time, start_entry, request_size)
-            entries.extend(new_entries)
         return entries

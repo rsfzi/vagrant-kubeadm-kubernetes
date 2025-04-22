@@ -6,9 +6,8 @@ import argparse
 import json
 from pathlib import Path
 
+from list import List
 from extract import Extract
-from query import Query
-from labels import Labels
 
 class Main:
     def __init__(self):
@@ -36,19 +35,15 @@ class Main:
         parser.add_argument('-l', '--logfile', help="log file")
         parser.add_argument('-o', '--output', default="-", type=argparse.FileType('w', encoding='UTF-8'))
         subparsers = parser.add_subparsers(help='subcommand help')
-        parser_extract = subparsers.add_parser('extract', help='extract log data from stream')
-        parser_extract.add_argument('-i', '--input', type=argparse.FileType('r'), required=True, help="input file")
+        parser_list = subparsers.add_parser('list', help='list log attributes')
+        #parser_query.add_argument('--url', default='http://10.0.0.10:32031', help="loki URL" + default)
+        #parser_query.add_argument('--limit', default=100, help="query limit" + default)
+        #parser_query.add_argument('--task', default="simexp", help="task name filter" + default)
+        #parser_query.add_argument('--host', help="host name filter")
+        #parser_query.add_argument('--pod', help="pod name filter")
+        parser_list.set_defaults(func=List)
+        parser_extract = subparsers.add_parser('extract', help='extract log data from openobserve')
         parser_extract.set_defaults(func=Extract)
-        parser_labels = subparsers.add_parser('labels', help='query loki for labels')
-        parser_labels.add_argument('--url', default='http://10.0.0.10:32031', help="loki URL" + default)
-        parser_labels.set_defaults(func=Labels)
-        parser_query = subparsers.add_parser('query', help='query loki for log data')
-        parser_query.add_argument('--url', default='http://10.0.0.10:32031', help="loki URL" + default)
-        parser_query.add_argument('--limit', default=100, help="query limit" + default)
-        parser_query.add_argument('--task', default="simexp", help="task name filter" + default)
-        parser_query.add_argument('--host', help="host name filter")
-        parser_query.add_argument('--pod', help="pod name filter")
-        parser_query.set_defaults(func=Query)
 
         args = parser.parse_args()
 
