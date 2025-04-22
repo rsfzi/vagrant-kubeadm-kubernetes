@@ -25,10 +25,9 @@ class Extract:
         if response.status_code != http.HTTPStatus.OK:
             raise RuntimeError("Error ({}): {}".format(response.status_code, response.text))
         results = response.json()
-        #print("result:\n%s" % json.dumps(results, indent=2))
+        #self._logger.info("result:\n%s" % json.dumps(results, indent=2))
         total = results["total"]
         self._logger.info("received {} entries".format(total))
-        #scan_records =
         entries = [row['log'] for row in results.get("hits", [])]
         return total, entries
 
