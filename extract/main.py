@@ -46,13 +46,14 @@ class Main:
         parser_list_nodes.set_defaults(func=ListNodes)
         parser_extract = subparsers.add_parser('extract', help='extract log data from openobserve')
         parser_extract.set_defaults(func=Extract)
-        #parser_query.add_argument('--limit', default=100, help="query limit" + default)
+        parser_extract.add_argument('--pod', help="pod name")
+        parser_extract.add_argument('--limit', type=int,default=20000, help="request limit" + default)
 
         args = parser.parse_args()
 
         self.start_logging(args.logfile, args.verbose)
         log = logging.getLogger(__name__)
-        log.debug("### started ###")
+        log.debug("### extract started ###")
         try:
             processor = args.func()
             entries = processor.get_entries(args)
@@ -60,13 +61,13 @@ class Main:
                 args.output.write("%s\n" % log_line)
             return 0
         except KeyboardInterrupt:
-            log.warning("aborted")
+            log.warning("extract aborted")
             return 2
         except:
             log.exception("exception:")
             return 1
         finally:
-            log.debug("### finished ###")
+            log.debug("### extract finished ###")
 
 
 if __name__ == "__main__":
