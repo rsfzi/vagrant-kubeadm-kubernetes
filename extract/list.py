@@ -21,7 +21,8 @@ class List(BaseQuery):
 
         start_time, end_time = self._get_times(datetime.timedelta(hours=48))
         total, entries = self._request_entries(args, sql_query, field, start_time, end_time, count=1000)
-        return entries
+        for entry in entries:
+            yield entry
 
 
 class ListPods(List):
