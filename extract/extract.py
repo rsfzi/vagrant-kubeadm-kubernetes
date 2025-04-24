@@ -17,7 +17,7 @@ class Extract(BaseQuery):
         """.format(args.pod)
 
         self._logger.debug("log download start")
-        start_time, end_time = self._get_times(datetime.timedelta(hours=48))
+        start_time, end_time = self._get_times(datetime.timedelta(hours=args.past))
         start_entry = 0
         count = args.limit
         total, entries = self._request_entries(args, sql_query, 'log', start_time, end_time, count, start_entry)

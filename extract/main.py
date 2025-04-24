@@ -37,6 +37,7 @@ class Main:
         parser.add_argument( '--host', default="10.0.0.10", help="openobserve host" + default)
         parser.add_argument('--user', default="root@example.com", help="user" + default)
         parser.add_argument('--password', default="admin", help="admin")
+        parser.add_argument('--past', type=int, default=48, help="request past hours" + default)
         subparsers = parser.add_subparsers(help='subcommand help', required=True)
         parser_list = subparsers.add_parser('list', help='list log attributes')
         subparsers_list = parser_list.add_subparsers(help='list subcommands help', required=True)
