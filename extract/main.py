@@ -47,7 +47,7 @@ class Main:
         parser_extract = subparsers.add_parser('extract', help='extract log data from openobserve')
         parser_extract.set_defaults(func=Extract)
         parser_extract.add_argument('--pod', help="pod name")
-        parser_extract.add_argument('--limit', type=int,default=20000, help="request limit" + default)
+        parser_extract.add_argument('--limit', type=int,default=16384, help="request limit" + default)
 
         args = parser.parse_args()
 
