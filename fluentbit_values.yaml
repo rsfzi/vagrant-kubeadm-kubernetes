@@ -431,13 +431,13 @@ config:
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
-    [OUTPUT]
-        Name stdout
-    #    Match *
-        #Match simexp.*
-        #Match kube.simexp.*
-        Match kube.*
-        #Match kube.var.log.containers.simexp.*
+    #[OUTPUT]
+    #    Name stdout
+    ##    Match *
+    #    #Match simexp.*
+    #    #Match kube.simexp.*
+    #    Match kube.*
+    #    #Match kube.var.log.containers.simexp.*
 
     [OUTPUT]
         Name http
