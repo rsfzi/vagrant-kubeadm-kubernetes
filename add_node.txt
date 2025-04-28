@@ -5,3 +5,8 @@ kubeadm token create --print-join-command
 kubectl delete  daemonset -n monitoring node-exporter
 kubectl apply -f /vagrant/node-exporter.yaml
 
+# on windows 11:
+https://forums.virtualbox.org/viewtopic.php?t=108745
+powercfg /powerthrottling disable /path "C:\Program Files\Oracle\VirtualBox\VBoxHeadless.exe"
+powercfg /powerthrottling disable /path "C:\Program Files\Oracle\VirtualBox\VirtualBoxVM.exe"
+powercfg /powerthrottling list
