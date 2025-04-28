@@ -1,0 +1,20 @@
+host se-ginkgo
+cpu: 4
+memory: 8192
+
+host se-spitzahorn
+host se-walnussbaum
+host se-wacholder
+cpu: 8
+#memory: 24586
+memory: 30730
+
+host se-heiligenkraut
+cpu: 16
+#memory: 49152
+memory: 57344
+
+se-kreuzdorn
+cpu: 12
+memory: 57344
+
