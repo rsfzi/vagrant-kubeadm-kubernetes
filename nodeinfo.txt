@@ -15,6 +15,6 @@ cpu: 16
 memory: 57344
 
 se-kreuzdorn
-cpu: 12
+cpu: 8
 memory: 57344
 
