@@ -66,6 +66,10 @@ Vagrant.configure("2") do |config|
   end
   config.vm.box_check_update = true
 
+  config.vm.provider "virtualbox" do |vb|
+    vb.default_nic_type = "virtio"
+  end
+
   if settings["nodes"]["control"]
   config.vm.define "controlplane" do |controlplane|
     controlplane.vm.hostname = "controlplane"
