@@ -21,11 +21,11 @@ class Extract(BaseQuery):
         start_entry = 0
         count = args.limit
         total, entries = self._request_entries(args, sql_query, 'log', start_time, end_time, count, start_entry)
-        while total:
+        while True:
             for entry in entries:
                 yield entry
+            if total < count:
+                break
             start_entry += total
             total, entries = self._request_entries(args, sql_query, 'log', start_time, end_time, count, start_entry)
-            if total < count:
-                total = None
         self._logger.debug("log download complete")
