@@ -48,7 +48,7 @@ sudo chown 1000:1000 /home/vagrant/.kube/config
 EOF
 
 # Install Metrics Server
-kubectl apply -f https://raw.githubusercontent.com/techiescamp/kubeadm-scripts/main/manifests/metrics-server.yaml
+kubectl apply -f /vagrant/metrics-server.yaml
 
 # Simexp cluster role
 kubectl apply -f /vagrant/simexp-role.yaml
