@@ -70,4 +70,8 @@ spec:
         - name: openobserve-data
           persistentVolumeClaim:
             claimName: openobserve-data-pvc
+      tolerations:
+      - key: "datanode"
+        operator: "Exists"
+        effect: "NoExecute"
 

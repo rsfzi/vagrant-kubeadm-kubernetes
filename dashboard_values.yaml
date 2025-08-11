@@ -139,7 +139,10 @@ app:
   # Use the following toleration if Dashboard can be deployed on a tainted control-plane nodes
   # - key: node-role.kubernetes.io/control-plane
   #   effect: NoSchedule
-  tolerations: []
+  tolerations:
+  - key: "datanode"
+    operator: "Exists"
+    effect: "NoExecute"
   affinity: {}
 
 auth:

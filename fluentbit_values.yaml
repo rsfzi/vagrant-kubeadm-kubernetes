@@ -294,6 +294,9 @@ tolerations:
   - key: "remote"
     operator: "Exists"
     effect: "NoExecute"          
+  - key: "datanode"
+    operator: "Exists"
+    effect: "NoExecute"
 
 affinity: {}
 

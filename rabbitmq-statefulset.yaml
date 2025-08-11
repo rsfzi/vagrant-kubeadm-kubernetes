@@ -42,6 +42,10 @@ spec:
       volumes:
       - name: rabbitmq-data
         emptyDir: {}
+      tolerations:
+      - key: "datanode"
+        operator: "Exists"
+        effect: "NoExecute"
       nodeSelector:
         kubernetes.io/hostname: node01
       #tolerations:

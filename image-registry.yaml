@@ -68,6 +68,10 @@ spec:
       - name: registry-storage
         persistentVolumeClaim:
           claimName: registry-pvc
+      tolerations:
+      - key: "datanode"
+        operator: "Exists"
+        effect: "NoExecute"
 ---
 apiVersion: v1
 kind: Service

@@ -180,6 +180,9 @@ Vagrant.configure("2") do |config|
           path: "scripts/node.sh"
 
       if i == 1
+        node.vm.provision "shell", privileged: false, inline: <<-SHELL
+          kubectl taint nodes node01 datanode=true:NoExecute --overwrite
+        SHELL
         node.vm.provision "shell" do |s|
           s.privileged= false
           s.path= "scripts/rabbitmq.sh"

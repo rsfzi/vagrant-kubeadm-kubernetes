@@ -44,6 +44,10 @@ spec:
         - name: prometheus-storage-volume
           emptyDir:
             sizeLimit: 500Mi
+      tolerations:
+      - key: "datanode"
+        operator: "Exists"
+        effect: "NoExecute"
       nodeSelector:
         kubernetes.io/hostname: node01
 ---
