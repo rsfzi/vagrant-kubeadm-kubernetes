@@ -291,6 +291,10 @@ web:
     # Create on-disk volume to store exec logs (required)
     - name: tmp-volume
       emptyDir: {}
+  tolerations:
+  - key: "datanode"
+    operator: "Exists"
+    effect: "NoExecute"
   nodeSelector:
     kubernetes.io/hostname: node01
   # Labels & annotations for WEB UI related resources
@@ -353,6 +357,10 @@ metricsScraper:
   volumes:
     - name: tmp-volume
       emptyDir: {}
+  tolerations:
+  - key: "datanode"
+    operator: "Exists"
+    effect: "NoExecute"
   nodeSelector:
     kubernetes.io/hostname: node01
   # Labels & annotations for Metrics Scraper related resources
@@ -392,6 +400,10 @@ kong:
     type: ClusterIP
     http:
       enabled: false
+  tolerations:
+  - key: "datanode"
+    operator: "Exists"
+    effect: "NoExecute"
 
 ## Optional Cert Manager sub-chart configuration
 ## Enable this if you don't already have cert-manager enabled on your cluster.
