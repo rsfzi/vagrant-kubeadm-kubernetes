@@ -62,6 +62,9 @@ spec:
       - key: "remote"
         operator: "Exists"
         effect: "NoExecute"          
+      - key: "datanode"
+        operator: "Exists"
+        effect: "NoExecute"          
 ---
 kind: Service
 apiVersion: v1
