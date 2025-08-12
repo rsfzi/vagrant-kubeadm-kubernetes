@@ -123,7 +123,6 @@ Vagrant.configure("2") do |config|
   end
 
   (1..NUM_WORKER_NODES).each do |i|
-
     config.vm.define "#{WORKER_PREFIX}node0#{i}" do |node|
       node.vm.hostname = "#{WORKER_PREFIX}node0#{i}"
       if WORKER_PREFIX == ""
@@ -142,8 +141,21 @@ Vagrant.configure("2") do |config|
         end
       end
       node.vm.provider "virtualbox" do |vb|
-          vb.cpus = settings["nodes"]["workers"]["cpu"]
-          vb.memory = settings["nodes"]["workers"]["memory"]
+          if settings["nodes"]["workers"]["#{WORKER_PREFIX}node0#{i}"]
+            if settings["nodes"]["workers"]["#{WORKER_PREFIX}node0#{i}"]["cpu"]
+              vb.cpus = settings["nodes"]["workers"]["#{WORKER_PREFIX}node0#{i}"]["cpu"]
+            else
+              vb.cpus = settings["nodes"]["workers"]["cpu"]
+            end
+            if settings["nodes"]["workers"]["#{WORKER_PREFIX}node0#{i}"]["memory"]
+              vb.memory = settings["nodes"]["workers"]["#{WORKER_PREFIX}node0#{i}"]["memory"]
+            else
+              vb.memory = settings["nodes"]["workers"]["memory"]
+            end
+          else
+            vb.cpus = settings["nodes"]["workers"]["cpu"]
+            vb.memory = settings["nodes"]["workers"]["memory"]
+          end
           if CLUSTER_NAME != ""
             vb.customize ["modifyvm", :id, "--groups", ("/" + CLUSTER_NAME)]
           end
