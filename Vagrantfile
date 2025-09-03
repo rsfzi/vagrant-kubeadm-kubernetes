@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
       done
   SHELL
   
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", name: "base packages", inline: <<-SHELL
     apt-get install -y podman
     apt-get install -y amqp-tools
     apt-get install -y fish
@@ -49,12 +49,12 @@ Vagrant.configure("2") do |config|
     apt-get install -y ncdu
   SHELL
   
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell", name: "shutdown scripts", inline: <<-SHELL
     cp /vagrant/scripts/shutdown_node.sh /home/vagrant
     chmod 744 /home/vagrant/shutdown_node.sh
   SHELL
 
-  config.vm.provision "shell", privileged:false, inline: <<-SHELL
+  config.vm.provision "shell", name: "copy cluster key", privileged:false, inline: <<-SHELL
     cp /vagrant/cluster_rsa* /home/vagrant/.ssh/
     chmod 600 /home/vagrant/.ssh/cluster_rsa
   SHELL
@@ -88,10 +88,12 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
     end
     controlplane.vm.provision "shell" do |s|
+      s.name= "copy public cluster key"
       s.privileged= false
       s.inline= "cat /vagrant/cluster_rsa.pub >> ~/.ssh/authorized_keys"
     end
     controlplane.vm.provision "shell",
+      name: "common",
       env: {
         "DNS_SERVERS" => settings["network"]["dns_servers"].join(" "),
         "ENVIRONMENT" => settings["environment"],
@@ -101,6 +103,7 @@ Vagrant.configure("2") do |config|
       },
       path: "scripts/common.sh"
     controlplane.vm.provision "shell",
+      name: "master",
       env: {
         "CALICO_VERSION" => settings["software"]["calico"],
         "CONTROL_IP" => settings["network"]["control_ip"],
@@ -109,13 +112,16 @@ Vagrant.configure("2") do |config|
       },
       path: "scripts/master.sh"
     controlplane.vm.provision "shell",
+      name: "helm",
       path: "scripts/helm.sh"
     controlplane.vm.provision "shell",
+      name: "wireguard",
       path: "scripts/wireguard.sh"
     controlplane.vm.provision "file", 
+      name: "ifup-hooks copy",
       source: "hooks/50-ifup-hooks", 
       destination: "/tmp/"
-    controlplane.vm.provision "shell", inline: <<-SHELL
+    controlplane.vm.provision "shell", name: "ifup-hooks install", inline: <<-SHELL
       cp /tmp/50-ifup-hooks /etc/networkd-dispatcher/routable.d/
       ln -s /etc/networkd-dispatcher/routable.d/50-ifup-hooks /etc/networkd-dispatcher/degraded.d/
     SHELL
@@ -128,9 +134,10 @@ Vagrant.configure("2") do |config|
       if WORKER_PREFIX == ""
         node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
         node.vm.provision "file", 
+          name: "ifup-hooks copy",
           source: "hooks/50-ifup-hooks", 
           destination: "/tmp/"
-        node.vm.provision "shell", inline: <<-SHELL
+        node.vm.provision "shell", name: "ifup-hooks install", inline: <<-SHELL
           cp /tmp/50-ifup-hooks /etc/networkd-dispatcher/routable.d/
           ln -s /etc/networkd-dispatcher/routable.d/50-ifup-hooks /etc/networkd-dispatcher/degraded.d/
         SHELL
@@ -161,10 +168,12 @@ Vagrant.configure("2") do |config|
           end
       end
       node.vm.provision "shell" do |s|
+        s.name= "copy cluster key"
         s.privileged= false
         s.inline= "cat /vagrant/cluster_rsa.pub >> ~/.ssh/authorized_keys"
       end
       node.vm.provision "shell",
+        name: "common",
         env: {
           "DNS_SERVERS" => settings["network"]["dns_servers"].join(" "),
           "ENVIRONMENT" => settings["environment"],
@@ -175,10 +184,12 @@ Vagrant.configure("2") do |config|
         path: "scripts/common.sh"
 
       node.vm.provision "shell",
+        name: "helm",
         path: "scripts/helm.sh"
       node.vm.provision "shell",
+        name: "wireguard",
         path: "scripts/wireguard.sh"
-      node.vm.provision "shell", inline: <<-SHELL
+      node.vm.provision "shell", name: "local folder", inline: <<-SHELL
           mkdir /var/lib/grafana
           mkdir /etc/grafana
           ln -s /vagrant/grafana /etc/grafana/provisioning
@@ -186,6 +197,7 @@ Vagrant.configure("2") do |config|
       SHELL
       if settings["nodes"]["control"]
         node.vm.provision "shell",
+          name: "node",
           env: {
             "NODE_PRIORITY" => "5"
           },
@@ -196,26 +208,32 @@ Vagrant.configure("2") do |config|
           kubectl taint nodes node01 datanode=true:NoExecute --overwrite
         SHELL
         node.vm.provision "shell" do |s|
+          s.name= "rabbitmq"
           s.privileged= false
           s.path= "scripts/rabbitmq.sh"
         end
         node.vm.provision "shell" do |s|
+          s.name= "openobserve"
           s.privileged= false
           s.path= "scripts/openobserve.sh"
         end
         node.vm.provision "shell" do |s|
+          s.name= "fluentbit"
           s.privileged= false
           s.path= "scripts/fluentbit.sh"
         end
         node.vm.provision "shell" do |s|
+          s.name= "kube-state-metrics"
           s.privileged= false
           s.path= "scripts/kube-state-metrics.sh"
         end
         node.vm.provision "shell" do |s|
+          s.name= "prometheus"
           s.privileged= false
           s.path= "scripts/prometheus.sh"
         end
         node.vm.provision "shell" do |s|
+          s.name= "grafana"
           s.privileged= false
           s.path= "scripts/grafana.sh"
         end
@@ -225,10 +243,12 @@ Vagrant.configure("2") do |config|
       if i == NUM_WORKER_NODES
         if settings["software"]["dashboard"] and settings["software"]["dashboard"] != ""
           node.vm.provision "shell" do |s|
+            s.name= "dashboard"
             s.privileged= false
             s.path= "scripts/dashboard.sh"
           end
           node.vm.provision "shell" do |s|
+            s.name= "image_registry"
             s.privileged= false
             s.path= "scripts/image_registry.sh"
           end
