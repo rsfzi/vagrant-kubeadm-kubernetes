@@ -118,7 +118,6 @@ Vagrant.configure("2") do |config|
       name: "wireguard",
       path: "scripts/wireguard.sh"
     controlplane.vm.provision "file", 
-      name: "ifup-hooks copy",
       source: "hooks/50-ifup-hooks", 
       destination: "/tmp/"
     controlplane.vm.provision "shell", name: "ifup-hooks install", inline: <<-SHELL
@@ -134,7 +133,6 @@ Vagrant.configure("2") do |config|
       if WORKER_PREFIX == ""
         node.vm.network "private_network", ip: IP_NW + "#{IP_START + i}"
         node.vm.provision "file", 
-          name: "ifup-hooks copy",
           source: "hooks/50-ifup-hooks", 
           destination: "/tmp/"
         node.vm.provision "shell", name: "ifup-hooks install", inline: <<-SHELL
