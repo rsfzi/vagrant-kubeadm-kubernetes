@@ -65,6 +65,7 @@ Vagrant.configure("2") do |config|
     config.vm.box = settings["software"]["box"]
   end
   config.vm.box_check_update = true
+  config.vm.boot_timeout = 120
 
   config.vm.provider "virtualbox" do |vb|
     vb.default_nic_type = "virtio"
