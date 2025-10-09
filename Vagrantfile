@@ -166,6 +166,9 @@ Vagrant.configure("2") do |config|
             vb.customize ["modifyvm", :id, "--groups", ("/" + CLUSTER_NAME)]
           end
       end
+      config.vm.provision "shell", name: "base packages", inline: <<-SHELL
+        apt-get install -y nfs-common
+      SHELL
       node.vm.provision "shell" do |s|
         s.name= "copy cluster key"
         s.privileged= false
