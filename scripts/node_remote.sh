@@ -80,3 +80,5 @@ sudo -i -u vagrant bash << EOF
 kubectl taint nodes $(hostname -s) remote=true:NoExecute --overwrite=true
 EOF
 
+/bin/bash $script_path/configure_dns.sh
+

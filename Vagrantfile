@@ -113,6 +113,9 @@ Vagrant.configure("2") do |config|
       },
       path: "scripts/master.sh"
     controlplane.vm.provision "shell",
+      name: "configure DNS",
+      path: "scripts/configure_dns.sh"
+    controlplane.vm.provision "shell",
       name: "helm",
       path: "scripts/helm.sh"
     controlplane.vm.provision "shell",
@@ -204,6 +207,10 @@ Vagrant.configure("2") do |config|
             "NODE_PRIORITY" => "5"
           },
           path: "scripts/node.sh"
+        node.vm.provision "shell",
+          name: "configure DNS",
+          privileged: false,
+          path: "scripts/configure_dns.sh"
 
       if i == 1
         node.vm.provision "shell", privileged: false, inline: <<-SHELL

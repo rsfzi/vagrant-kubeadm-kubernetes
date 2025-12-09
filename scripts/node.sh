@@ -26,5 +26,9 @@ cat << EOF >> /etc/containers/registries.conf
 [[registry]]
 location = "10.0.0.10:30500"
 insecure = true
+
+[[registry]]
+location = "image-registry.images.svc.cluster.local:5000"
+insecure = true
 EOF
 systemctl restart crio
