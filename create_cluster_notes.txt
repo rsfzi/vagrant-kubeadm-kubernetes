@@ -1,0 +1,10 @@
+
+1. vagrant create controlplane
+2. vagrant create node01
+3. vagrant create node02
+4. on controlplane:
+4.1. add route for remote nodes (see routing.txt)
+sudo ip route add 10.1.0.0/24 via 10.0.0.1 dev eth1
+4.2. restart monitoring (see add_note.txt)
+kubectl delete  daemonset -n monitoring node-exporter
+kubectl apply -f /vagrant/node-exporter.yaml
